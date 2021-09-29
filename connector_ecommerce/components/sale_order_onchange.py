@@ -31,9 +31,10 @@ class OnChangeManager(Component):
         # otherwise 'onchange()' will not apply changes to them
 
         all_values = values.copy()
-        for all_value in all_values:
-            if all_value not in model._fields:
-                del all_values[all_value]
+        new_values = values.copy()
+        for new_value in new_values:
+            if new_value not in model._fields:
+                del all_values[new_value]
 
         for field in model._fields:
             if field not in all_values:
