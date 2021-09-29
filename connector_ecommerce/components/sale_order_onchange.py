@@ -31,10 +31,12 @@ class OnChangeManager(Component):
         # otherwise 'onchange()' will not apply changes to them
 
         all_values = values.copy()
-        new_values = values.copy()
-        for new_value in new_values:
-            if new_value not in model._fields:
-                del all_values[new_value]
+        tmp_values = values.copy()
+        other_values = {}
+        for tmp_value in tmp_values:
+            if tmp_value not in model._fields:
+                other_values.update({tmp_value: tmp_values[tmp_value]})
+                del all_values[tmp_value]
 
         for field in model._fields:
             if field not in all_values:
@@ -43,14 +45,15 @@ class OnChangeManager(Component):
         # we work on a temporary record
         new_record = model.new(all_values)
 
-        # new_values = {}
+        new_values = {}
         for field in onchange_fields:
             onchange_values = new_record.onchange(all_values,
                                                   field, onchange_specs)
             new_values.update(self.get_new_values(values, onchange_values,
                                                   model=model._name))
             all_values.update(new_values)
-
+        all_values.update(other_values
+                          )
         res = {f: v for f, v in all_values.items()
                if f in values or f in new_values}
         return res
