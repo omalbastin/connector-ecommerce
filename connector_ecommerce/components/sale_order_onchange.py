@@ -29,7 +29,12 @@ class OnChangeManager(Component):
 
         # we need all fields in the dict even the empty ones
         # otherwise 'onchange()' will not apply changes to them
+
         all_values = values.copy()
+        for all_value in all_values:
+            if all_value not in model._fields:
+                del all_values[all_value]
+
         for field in model._fields:
             if field not in all_values:
                 all_values[field] = False
