@@ -43,7 +43,7 @@ class OnChangeManager(Component):
         # we work on a temporary record
         new_record = model.new(all_values)
 
-        new_values = {}
+        # new_values = {}
         for field in onchange_fields:
             onchange_values = new_record.onchange(all_values,
                                                   field, onchange_specs)
